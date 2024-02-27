@@ -1,4 +1,4 @@
-package ru.prodcontest.kotlinprodcontesttemplate
+package ru.prodcontest
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
