@@ -1,24 +1,31 @@
+# Используем базовый образ с JDK 17 для сборки
 FROM eclipse-temurin:17-jdk-alpine as build
 WORKDIR /workspace/app
 
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-RUN ./mvnw dependency:resolve
-
+# Копируем файлы Gradle и исходный код в образ
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle.kts .
+COPY gradle.properties .
+COPY settings.gradle.kts .
 COPY src src
-RUN ./mvnw install -DskipTests
-RUN mkdir -p target/dependency && cd target/dependency && jar -xf ../*.jar
 
+# Выполняем сборку проекта, пропускаем тесты
+RUN ./gradlew build -x test --no-daemon
+
+# Используем базовый образ с JDK 17 для выполнения
 FROM eclipse-temurin:17-jdk-alpine
 VOLUME /tmp
 
-ARG DEPENDENCY=/workspace/app/target/dependency
+# Копируем собранный jar файл из предыдущего шага
+COPY --from=build /workspace/app/build/libs/Pulse-0.0.1-all.jar app.jar
 
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+ENV SERVER_ADRESS=0.0.0.0:8080 \
+    POSTGRES_JDBC_URL=jdbc:postgresql://62.109.21.83:5431/pulse \
+    POSTGRES_USERNAME=K0ras1K \
+    DB_PASSWORD=Shah9Sah.
 
-ENV SERVER_PORT=8080
+EXPOSE 8080
 
-CMD ["sh", "-c", "exec java -Dserver.port=$SERVER_PORT -Dserver.address=0.0.0.0 -cp app:app/lib/* ru.prodcontest.ProdcontestApplicationKt"]
+# Запускаем приложение
+CMD ["sh", "-c", "exec java -jar /app.jar"]
