@@ -71,7 +71,7 @@ set CLASSPATH=%APP_HOME%\lib\main.jar;%APP_HOME%\lib\cloudflare-ktor-master-SNAP
 
 
 @rem Execute Pulse
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %PULSE_OPTS%  -classpath "%CLASSPATH%" ru.k0ras1k.cloudplanet.ApplicationKt %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %PULSE_OPTS%  -classpath "%CLASSPATH%" online.k0ras1k.pulse.ApplicationKt %*
 
 :end
 @rem End local scope for the variables with windows NT shell

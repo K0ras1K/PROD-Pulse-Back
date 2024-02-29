@@ -201,7 +201,7 @@ fi
 
 set -- \
         -classpath "$CLASSPATH" \
-        ru.k0ras1k.cloudplanet.ApplicationKt \
+        online.k0ras1k.pulse.ApplicationKt \
         "$@"
 
 # Use "xargs" to parse quoted args.
