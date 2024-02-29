@@ -24,7 +24,7 @@ fun Application.module() {
         DatabaseFactory.createHikariDataSource(
             System.getenv("POSTGRES_JDBC_URL"),
             "org.postgresql.Driver",
-            System.getenv("POSTGRES_PASSWORD"),
+            System.getenv("POSTGRES_USERNAME"),
         ),
     )
 
