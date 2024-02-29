@@ -23,7 +23,7 @@ COPY build/libs/Pulse-0.0.1-all.jar app.jar
 ENV SERVER_ADRESS=0.0.0.0:8080 \
     POSTGRES_JDBC_URL=jdbc:postgresql://62.109.21.83:5431/pulse \
     POSTGRES_USERNAME=K0ras1K \
-    DB_PASSWORD=Shah9Sah.
+    POSTGRES_PASSWORD=Shah9Sah.
 
 EXPOSE 8080
 

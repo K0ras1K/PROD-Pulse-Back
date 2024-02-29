@@ -16,12 +16,15 @@ fun main() {
 }
 
 fun Application.module() {
+    println("Postgres jbdc url - ${System.getenv("POSTGRES_JDBC_URL")}")
+    println("Postgres user - ${System.getenv("POSTGRES_USERNAME")}")
+    println("Postgres pw - ${System.getenv("POSTGRES_PASSWORD")}")
     // connect to database using Hikari Connection Pool
     val db = Database.connect(
         DatabaseFactory.createHikariDataSource(
             System.getenv("POSTGRES_JDBC_URL"),
             "org.postgresql.Driver",
-            System.getenv("POSTGRES_USERNAME"),
+            System.getenv("POSTGRES_PASSWORD"),
         ),
     )
 
