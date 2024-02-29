@@ -158,7 +158,7 @@ class AuthUserController(call: ApplicationCall) : AbstractController(call) {
                     isPublic = target_user_data.isPublic,
                     phone = target_user_data.phone,
                 )
-                call.respond(HttpStatusCode.OK, mapOf(Pair("profile", target_profile_model)))
+                call.respond(HttpStatusCode.OK, target_profile_model)
                 return@runBlocking
             }
 
@@ -170,7 +170,7 @@ class AuthUserController(call: ApplicationCall) : AbstractController(call) {
                 phone = target_user_data.phone,
                 image = target_user_data.image
             )
-            call.respond(HttpStatusCode.OK, mapOf(Pair("profile", target_profile_model)))
+            call.respond(HttpStatusCode.OK, target_profile_model)
         }
     }
 
