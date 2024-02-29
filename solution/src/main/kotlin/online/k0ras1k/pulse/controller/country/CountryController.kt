@@ -15,14 +15,31 @@ class CountryController(val call: ApplicationCall) {
     fun selectCountry() {
         runBlocking {
             try {
+                // Получаем все регионы из запроса
                 val regionsParam = call.request.queryParameters.getAll("region")
-                val regions = regionsParam?.mapNotNull { Region.valueOf(it) } ?: emptyList()
 
-                val countries = Country.selectCountry(regions)
-                call.respond(HttpStatusCode.OK, countries)
+                // Проверяем, что все регионы из запроса существуют в Enum
+                val validRegions = regionsParam?.all { regionName ->
+                    try {
+                        Region.valueOf(regionName)
+                        true
+                    } catch (e: IllegalArgumentException) {
+                        false
+                    }
+                } ?: true // Если список регионов пуст, считаем запрос валидным
+
+                if (!validRegions) {
+                    // Если найдены несуществующие регионы, отправляем ошибку
+                    call.respond(HttpStatusCode.BadRequest, ErrorResponse("Переданы неверные значения регионов."))
+                } else {
+                    // Все регионы валидны, продолжаем обработку запроса
+                    val regions = regionsParam?.mapNotNull { Region.valueOf(it) } ?: emptyList()
+                    val countries = Country.selectCountry(regions)
+                    call.respond(HttpStatusCode.OK, countries)
+                }
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message!!))
-            }
+            call.respond(HttpStatusCode.BadRequest, ErrorResponse("Формат входного запроса не соответствует формату."))
+        }
         }
     }
 
