@@ -2,11 +2,8 @@ package online.k0ras1k.pulse.data.database
 
 import online.k0ras1k.pulse.data.enums.PostReact
 import online.k0ras1k.pulse.data.models.dto.PostReactionData
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
 
@@ -28,6 +25,10 @@ object PostReaction: Table("post_reactions") {
                 it[_post_id] = post_reaction_data.post_id
                 it[_react_time] = post_reaction_data.react_time
                 it[_react] = post_reaction_data.react
+            }
+            PostReaction.deleteWhere { PostReaction._login.eq(post_reaction_data.login) and
+                    PostReaction._react.eq(if (post_reaction_data.react == PostReact.LIKE) PostReact.DISLIKE
+                    else PostReact.LIKE)
             }
         }
     }

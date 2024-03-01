@@ -7,8 +7,10 @@ import io.ktor.server.response.*
 import kotlinx.coroutines.runBlocking
 import online.k0ras1k.pulse.controller.AbstractController
 import online.k0ras1k.pulse.data.database.Friend
+import online.k0ras1k.pulse.data.database.User
 import online.k0ras1k.pulse.data.models.dto.FriendData
 import online.k0ras1k.pulse.data.models.inout.input.FriendInputModel
+import online.k0ras1k.pulse.data.models.inout.output.ErrorResponse
 
 class AuthFriendController(call: ApplicationCall): AbstractController(call) {
 
@@ -28,6 +30,11 @@ class AuthFriendController(call: ApplicationCall): AbstractController(call) {
     suspend fun addFriend() {
         runBlocking {
             val friend_login = call.receive<FriendInputModel>().login
+
+            if (User.selectUserByLogin(friend_login) == null) {
+                call.respond(HttpStatusCode.NotFound, ErrorResponse("Пользователь с указанным логином не найден"))
+                return@runBlocking
+            }
 
             val friend_data = FriendData(
                 login,

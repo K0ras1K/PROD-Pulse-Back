@@ -158,7 +158,7 @@ class AuthUserController(call: ApplicationCall) : AbstractController(call) {
                     isPublic = target_user_data.isPublic,
                     phone = target_user_data.phone,
                 )
-                call.respond(HttpStatusCode.OK, mapOf(Pair("profile", target_profile_model)))
+                call.respond(HttpStatusCode.OK, target_profile_model)
                 return@runBlocking
             }
 
@@ -170,7 +170,7 @@ class AuthUserController(call: ApplicationCall) : AbstractController(call) {
                 phone = target_user_data.phone,
                 image = target_user_data.image
             )
-            call.respond(HttpStatusCode.OK, mapOf(Pair("profile", target_profile_model)))
+            call.respond(HttpStatusCode.OK, target_profile_model)
         }
     }
 
@@ -180,7 +180,7 @@ class AuthUserController(call: ApplicationCall) : AbstractController(call) {
             val request_user = User.selectUserByLogin(login)!!
 
             if (!BCrypt.checkpw(receive.oldPassword, request_user.password)) {
-                call.respond(HttpStatusCode.Unauthorized, ErrorResponse("Старый пароль не верен"))
+                call.respond(HttpStatusCode.Forbidden, ErrorResponse("Старый пароль не верен"))
                 return@runBlocking
             }
 
