@@ -10,6 +10,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.websocket.*
+import online.k0ras1k.pulse.data.database.User
 import online.k0ras1k.pulse.data.models.inout.output.ErrorResponse
 import online.k0ras1k.pulse.data.static.ApplicationConstants
 import java.time.Duration
@@ -20,7 +21,8 @@ fun Application.initializePlugins() {
         jwt("auth-jwt") {
             verifier(JWT.require(Algorithm.HMAC256(ApplicationConstants.SERVICE_SECRET_TOKEN)).build())
             validate { credential ->
-                if (credential.payload.getClaim("login").asString() != "") {
+                val passwordHash = credential.payload.getClaim("passwordHash").asString()
+                if (credential.payload.getClaim("login").asString() != "" && isValidPasswordHash(credential.payload.getClaim("login").asString() , passwordHash)) {
                     JWTPrincipal(credential.payload)
                 } else {
                     null
@@ -35,4 +37,8 @@ fun Application.initializePlugins() {
     install(ContentNegotiation) {
         json()
     }
+}
+
+fun isValidPasswordHash(username: String, passwordHash: String): Boolean {
+    return (User.selectUserByLogin(username)!!.password == passwordHash)
 }

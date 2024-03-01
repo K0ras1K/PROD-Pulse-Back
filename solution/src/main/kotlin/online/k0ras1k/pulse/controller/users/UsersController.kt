@@ -120,7 +120,7 @@ class UsersController(val call: ApplicationCall) {
 
             val token = JWT.create()
                 .withClaim("login", selected_user.login)
-                .withClaim("password", selected_user.password)
+                .withClaim("passwordHash", selected_user.password)
                 .withExpiresAt(Date(System.currentTimeMillis() + 60 * 60 * 60 * 24 * 60))
                 .sign(Algorithm.HMAC256(ApplicationConstants.SERVICE_SECRET_TOKEN))
             call.respond(hashMapOf("token" to token))
