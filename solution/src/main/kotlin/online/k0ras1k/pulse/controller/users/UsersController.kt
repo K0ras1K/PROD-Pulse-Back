@@ -15,6 +15,7 @@ import online.k0ras1k.pulse.data.models.inout.input.LoginInputModel
 import online.k0ras1k.pulse.data.models.inout.output.ErrorResponse
 import online.k0ras1k.pulse.data.models.inout.output.ImageEmptyProfileRespondModel
 import online.k0ras1k.pulse.data.models.inout.output.ProfileRespondModel
+import online.k0ras1k.pulse.data.models.inout.output.TokenRespondOutput
 import online.k0ras1k.pulse.data.static.ApplicationConstants
 import org.mindrot.jbcrypt.BCrypt
 import java.util.*
@@ -123,7 +124,7 @@ class UsersController(val call: ApplicationCall) {
                 .withClaim("passwordHash", selected_user.password)
                 .withExpiresAt(Date(System.currentTimeMillis() + 60 * 60 * 60 * 24 * 60))
                 .sign(Algorithm.HMAC256(ApplicationConstants.SERVICE_SECRET_TOKEN))
-            call.respond(hashMapOf("token" to token))
+            call.respond(TokenRespondOutput(token))
 
         }
     }

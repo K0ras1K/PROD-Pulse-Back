@@ -45,20 +45,24 @@ class CountryController(val call: ApplicationCall) {
 
     fun selectFromAlpha() {
         runBlocking {
-            val alpha2 = call.parameters["alpha2"] ?: return@runBlocking call.respond(
-                HttpStatusCode.BadRequest,
-                ErrorResponse("Missing or invalid alpha2 parameter")
-            )
+            println("Starting find region")
+            try {
+                val alpha2 = call.parameters["alpha2"]!!
 
-            val country = Country.selectCountryByAlpha2(alpha2)
-            if (country != null) {
-                call.respond(country)
-            } else {
-                val alpha2 = call.parameters["alpha2"] ?: return@runBlocking call.respond(
-                    HttpStatusCode.BadRequest,
-                    ErrorResponse("Country not found")
-                )
+                val country = Country.selectCountryByAlpha2(alpha2)
+                if (country != null) {
+                    call.respond(HttpStatusCode.OK, country)
+                } else {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse("Country not found")
+                    )
+                }
             }
+            catch (exception: Exception) {
+                exception.printStackTrace()
+            }
+
         }
     }
 

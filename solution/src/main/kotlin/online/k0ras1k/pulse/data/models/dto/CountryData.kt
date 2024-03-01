@@ -9,6 +9,6 @@ data class CountryData (
     val name: String,
     val alpha2: String,
     val alpha3: String,
-    val region: Region?,
+    val region: Region?
 
 )

@@ -26,6 +26,12 @@ application {
 repositories {
     mavenCentral()
     maven("https://jitpack.io/") // JitPack repository
+    maven {
+        url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
+    }
+    maven {
+        url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
+    }
 }
 
 dependencies {
@@ -35,8 +41,6 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-websockets:$ktor_version")
-    implementation("io.ktor:ktor-client-apache:$ktor_version")
-    implementation("io.ktor:ktor-client-auth:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
     implementation("com.github.lamba92:kotlingram-core:1.2.7")
@@ -73,6 +77,16 @@ dependencies {
     implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4")
 
     implementation("org.postgresql:postgresql:42.7.0")
+
+    testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+    testImplementation("io.github.corbym:dokker:0.2.0")
+
+    implementation("io.ktor:ktor-client-serialization:$ktor_version")
+    implementation("io.ktor:ktor-client-core:$ktor_version") // Основной клиент Ktor
+    implementation("io.ktor:ktor-client-cio:$ktor_version") // Engine, можно выбрать другой
+    implementation("io.ktor:ktor-client-serialization:$ktor_version") // Для сериализации
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {

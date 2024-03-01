@@ -34,24 +34,32 @@ object Country: Table("countries") {
 
     //===============================================UTIL===============================================================
     fun selectCountryByAlpha2(alpha2: String): CountryData? {
-        return transaction {
-            Country.select { Country._alpha2 eq alpha2 }.singleOrNull()?.let { rowToCountryData(it) }
+        return try {
+            transaction {
+                val respond = Country.select { Country._alpha2 eq alpha2 }.single()
+                rowToCountryData(respond)
+            }
         }
+        catch(exception: Exception) {
+            null
+        }
+
     }
 
     private fun rowToCountryData(row: ResultRow): CountryData {
-        if (row[_region] != "") {
+        if (row[Country._region] != "") {
+            println("reyurning all country data")
             return CountryData(
-                name = row[_name],
-                alpha2 = row[_alpha2],
-                alpha3 = row[_alpha3],
-                region = Region.valueOf(row[_region])
+                name = row[Country._name],
+                alpha2 = row[Country._alpha2],
+                alpha3 = row[Country._alpha3],
+                region = Region.valueOf(row[Country._region])
             )
         }
         return CountryData(
-            name = row[_name],
-            alpha2 = row[_alpha2],
-            alpha3 = row[_alpha3],
+            name = row[Country._name],
+            alpha2 = row[Country._alpha2],
+            alpha3 = row[Country._alpha3],
             null
         )
     }
