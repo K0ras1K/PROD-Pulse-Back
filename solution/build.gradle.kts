@@ -43,6 +43,9 @@ dependencies {
     implementation("io.ktor:ktor-server-websockets:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
+    implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-jackson:$ktor_version")
+
     implementation("com.github.lamba92:kotlingram-core:1.2.7")
     implementation("com.github.lamba92:kotlingram-bot-builder:1.2.7")
     implementation("com.googlecode.json-simple:json-simple:1.1.1")

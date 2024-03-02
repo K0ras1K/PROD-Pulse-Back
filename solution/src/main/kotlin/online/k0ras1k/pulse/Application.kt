@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.Database
 
 fun main() {
 //    val site_db = Database.connect("jdbc:mariadb://86.110.212.152:3306/testsite?enabledTLSProtocols=TLSv1.2&serverTimezone=UTC", driver = "org.mariadb.jdbc.Driver", user = "neferpito", password = "Shah9Sah.")
-    val serverAddress = System.getProperty("SERVER_ADRESS", "0.0.0.0:8080")
+    val serverAddress = System.getProperty("SERVER_ADRESS", "0.0.0.0:57424")
 
     val host = serverAddress.split(":")[0]
     val port = serverAddress.split(":")[1]

@@ -3,6 +3,7 @@ package online.k0ras1k.pulse.plugins
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.http.*
+import io.ktor.serialization.jackson.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -37,6 +38,16 @@ fun Application.initializePlugins() {
     install(ContentNegotiation) {
         json()
     }
+
+//    install(ContentNegotiation) {
+//        jackson {
+//            // customize the Jackson serializer as usual
+//            configure(SerializationFeature.INDENT_OUTPUT, true)
+//            setDefaultPrettyPrinter(DefaultPrettyPrinter().apply {
+//                indentArraysWith(DefaultPrettyPrinter.FixedSpaceIndenter.instance)
+//            })
+//        }
+//    }
 }
 
 fun isValidPasswordHash(username: String, passwordHash: String): Boolean {
