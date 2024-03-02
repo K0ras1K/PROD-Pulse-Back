@@ -10,7 +10,8 @@ import org.jetbrains.exposed.sql.Database
 
 fun main() {
 //    val site_db = Database.connect("jdbc:mariadb://86.110.212.152:3306/testsite?enabledTLSProtocols=TLSv1.2&serverTimezone=UTC", driver = "org.mariadb.jdbc.Driver", user = "neferpito", password = "Shah9Sah.")
-    val serverAddress = System.getProperty("SERVER_ADRESS")
+    val serverAddress = System.getenv("SERVER_ADRESS")
+    println(serverAddress)
 
     val host = serverAddress.split(":")[0]
     val port = serverAddress.split(":")[1]
@@ -19,8 +20,8 @@ fun main() {
 
 fun Application.module() {
     // connect to database using Hikari Connection Pool
-    val jdbcUrl = System.getProperty("POSTGRES_JDBC_URL")
-    val username = System.getProperty("POSTGRES_USERNAME")
+    val jdbcUrl = System.getenv("POSTGRES_JDBC_URL")
+    val username = System.getenv("POSTGRES_USERNAME")
     val db = Database.connect(
         DatabaseFactory.createHikariDataSource(
             jdbcUrl,

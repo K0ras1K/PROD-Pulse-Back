@@ -17,7 +17,7 @@ object DatabaseFactory {
             isAutoCommit = true
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
             username = login
-            password = System.getProperty("POSTGRES_PASSWORD")
+            password = System.getenv("POSTGRES_PASSWORD")
             validate()
         },
     )
