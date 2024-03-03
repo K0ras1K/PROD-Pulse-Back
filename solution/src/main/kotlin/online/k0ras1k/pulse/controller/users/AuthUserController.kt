@@ -13,7 +13,6 @@ import online.k0ras1k.pulse.data.models.dto.UserData
 import online.k0ras1k.pulse.data.models.inout.input.PatchProfileInputModel
 import online.k0ras1k.pulse.data.models.inout.input.UpdatePasswordInputModel
 import online.k0ras1k.pulse.data.models.inout.output.ErrorResponse
-import online.k0ras1k.pulse.data.models.inout.output.ImageEmptyProfileRespondModel
 import online.k0ras1k.pulse.data.models.inout.output.ProfileRespondModel
 import org.mindrot.jbcrypt.BCrypt
 import java.util.regex.Pattern
@@ -29,25 +28,13 @@ class AuthUserController(call: ApplicationCall) : AbstractController(call) {
                 return@runBlocking
             }
 
-            if (user_model!!.image == "") {
-                val target_profile_model = ImageEmptyProfileRespondModel (
-                    login = user_model.login,
-                    email = user_model.email,
-                    countryCode = user_model.countryCode,
-                    isPublic = user_model.isPublic,
-                    phone = user_model.phone,
-                )
-                call.respond(HttpStatusCode.OK, target_profile_model)
-                return@runBlocking
-            }
-
-            val target_profile_model = ProfileRespondModel (
+            val target_profile_model = ProfileRespondModel(
                 login = user_model!!.login,
                 email = user_model.email,
                 countryCode = user_model.countryCode,
                 isPublic = user_model.isPublic,
-                phone = user_model.phone,
-                image = user_model.image
+                phone = user_model.phone.takeIf { it.isNotEmpty() },
+                image = user_model.image.takeIf { it.isNotEmpty() }
             )
             call.respond(HttpStatusCode.OK, target_profile_model)
         }
@@ -111,25 +98,13 @@ class AuthUserController(call: ApplicationCall) : AbstractController(call) {
                 call.respond(HttpStatusCode.InternalServerError)
             }
 
-            if (selected_user_data!!.image == "") {
-                val target_profile_model = ImageEmptyProfileRespondModel (
-                    login = selected_user_data.login,
-                    email = selected_user_data.email,
-                    countryCode = selected_user_data.countryCode,
-                    isPublic = selected_user_data.isPublic,
-                    phone = selected_user_data.phone,
-                )
-                call.respond(HttpStatusCode.OK, mapOf(Pair("profile", target_profile_model)))
-                return@runBlocking
-            }
-
-            val target_profile_model = ProfileRespondModel (
+            val target_profile_model = ProfileRespondModel(
                 login = selected_user_data!!.login,
                 email = selected_user_data.email,
                 countryCode = selected_user_data.countryCode,
                 isPublic = selected_user_data.isPublic,
-                phone = selected_user_data.phone,
-                image = selected_user_data.image
+                phone = selected_user_data.phone.takeIf { it.isNotEmpty() },
+                image = selected_user_data.image.takeIf { it.isNotEmpty() }
             )
             call.respond(HttpStatusCode.OK, mapOf(Pair("profile", target_profile_model)))
         }
@@ -150,25 +125,13 @@ class AuthUserController(call: ApplicationCall) : AbstractController(call) {
                 return@runBlocking
             }
 
-            if (target_user_data!!.image == "") {
-                val target_profile_model = ImageEmptyProfileRespondModel (
-                    login = target_user_data.login,
-                    email = target_user_data.email,
-                    countryCode = target_user_data.countryCode,
-                    isPublic = target_user_data.isPublic,
-                    phone = target_user_data.phone,
-                )
-                call.respond(HttpStatusCode.OK, target_profile_model)
-                return@runBlocking
-            }
-
-            val target_profile_model = ProfileRespondModel (
+            val target_profile_model = ProfileRespondModel(
                 login = target_user_data!!.login,
                 email = target_user_data.email,
                 countryCode = target_user_data.countryCode,
                 isPublic = target_user_data.isPublic,
-                phone = target_user_data.phone,
-                image = target_user_data.image
+                phone = target_user_data.phone.takeIf { it.isNotEmpty() },
+                image = target_user_data.image.takeIf { it.isNotEmpty() }
             )
             call.respond(HttpStatusCode.OK, target_profile_model)
         }

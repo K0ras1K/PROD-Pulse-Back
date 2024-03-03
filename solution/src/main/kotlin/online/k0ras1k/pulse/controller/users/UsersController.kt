@@ -13,7 +13,6 @@ import online.k0ras1k.pulse.data.enums.ValidationStatus
 import online.k0ras1k.pulse.data.models.dto.UserData
 import online.k0ras1k.pulse.data.models.inout.input.LoginInputModel
 import online.k0ras1k.pulse.data.models.inout.output.ErrorResponse
-import online.k0ras1k.pulse.data.models.inout.output.ImageEmptyProfileRespondModel
 import online.k0ras1k.pulse.data.models.inout.output.ProfileRespondModel
 import online.k0ras1k.pulse.data.models.inout.output.TokenRespondOutput
 import online.k0ras1k.pulse.data.static.ApplicationConstants
@@ -77,25 +76,13 @@ class UsersController(val call: ApplicationCall) {
                 call.respond(HttpStatusCode.InternalServerError)
             }
 
-            if (selected_user_data!!.image == "") {
-                val target_profile_model = ImageEmptyProfileRespondModel (
-                    login = selected_user_data.login,
-                    email = selected_user_data.email,
-                    countryCode = selected_user_data.countryCode,
-                    isPublic = selected_user_data.isPublic,
-                    phone = selected_user_data.phone,
-                )
-                call.respond(HttpStatusCode.Created, mapOf(Pair("profile", target_profile_model)))
-                return@runBlocking
-            }
-
-            val target_profile_model = ProfileRespondModel (
+            val target_profile_model = ProfileRespondModel(
                 login = selected_user_data!!.login,
                 email = selected_user_data.email,
                 countryCode = selected_user_data.countryCode,
                 isPublic = selected_user_data.isPublic,
-                phone = selected_user_data.phone,
-                image = selected_user_data.image
+                phone = selected_user_data.phone.takeIf { it.isNotEmpty() },
+                image = selected_user_data.image.takeIf { it.isNotEmpty() }
             )
             call.respond(HttpStatusCode.Created, mapOf(Pair("profile", target_profile_model)))
         }
@@ -131,6 +118,9 @@ class UsersController(val call: ApplicationCall) {
 
 
     private fun validateField(field: String, maxLength: Int?, pattern: String?): ValidationStatus {
+        if (field == "") {
+            return ValidationStatus.ACCEPTED
+        }
         if (maxLength != null && field.length > maxLength) {
             return ValidationStatus.INVALID_LENGTH
         }

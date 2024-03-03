@@ -10,7 +10,7 @@ data class UserData(
     val password: String,
     val countryCode: String,
     val isPublic: Boolean,
-    val phone: String,
+    val phone: String = "",
     val image: String = ""
 
 )

@@ -11,6 +11,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.websocket.*
+import kotlinx.serialization.json.Json
 import online.k0ras1k.pulse.data.database.User
 import online.k0ras1k.pulse.data.models.inout.output.ErrorResponse
 import online.k0ras1k.pulse.data.static.ApplicationConstants
@@ -36,7 +37,11 @@ fun Application.initializePlugins() {
     }
 
     install(ContentNegotiation) {
-        json()
+        json(
+            Json {
+                encodeDefaults = false
+            }
+        )
     }
 
 //    install(ContentNegotiation) {
