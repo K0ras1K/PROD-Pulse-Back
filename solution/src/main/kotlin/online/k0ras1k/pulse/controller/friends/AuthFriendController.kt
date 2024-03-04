@@ -20,9 +20,9 @@ class AuthFriendController(call: ApplicationCall): AbstractController(call) {
 
             val removed = Friend.removeFriend(login, friend_login)
             if (removed) {
-                call.respond(HttpStatusCode.OK, mapOf(Pair("status", "ok")))
+               call.respond(HttpStatusCode.OK, mapOf(Pair("status", "ok")))
             } else {
-                call.respond(HttpStatusCode.BadRequest, "Friend not found in your list")
+                call.respond(HttpStatusCode.NotFound, "Пользователь не найден у вас в друзьях или не существует")
             }
         }
     }
@@ -53,8 +53,20 @@ class AuthFriendController(call: ApplicationCall): AbstractController(call) {
 
     suspend fun getFriends() {
         runBlocking {
-            val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 5
-            val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
+            var limit = call.request.queryParameters["limit"]?.toIntOrNull()
+            var offset = call.request.queryParameters["offset"]?.toIntOrNull()
+
+            if ((limit == null && call.request.queryParameters["limit"] != null) || (offset == null && call.request.queryParameters["offset"] != null)) {
+                call.respond(HttpStatusCode.BadRequest, "Лимит и офсет должны быть Int")
+                return@runBlocking
+            }
+
+            if (limit == null) {
+                limit = 5
+            }
+            if (offset == null) {
+                offset = 0
+            }
 
             val friends = Friend.getFriends(login, limit, offset)
             call.respond(HttpStatusCode.OK, friends)

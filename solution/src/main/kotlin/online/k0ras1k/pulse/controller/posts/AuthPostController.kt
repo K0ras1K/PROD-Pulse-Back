@@ -67,8 +67,20 @@ class AuthPostController(call: ApplicationCall): AbstractController(call) {
 
     suspend fun getMyFeed() {
         runBlocking {
-            val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 5
-            val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
+            var limit = call.request.queryParameters["limit"]?.toIntOrNull()
+            var offset = call.request.queryParameters["offset"]?.toIntOrNull()
+
+            if ((limit == null && call.request.queryParameters["limit"] != null) || (offset == null && call.request.queryParameters["offset"] != null)) {
+                call.respond(HttpStatusCode.BadRequest, "Лимит и офсет должны быть Int")
+                return@runBlocking
+            }
+
+            if (limit == null) {
+                limit = 5
+            }
+            if (offset == null) {
+                offset = 0
+            }
 
             call.respond(HttpStatusCode.OK, Post.getMyPostFeed(login, limit, offset))
         }
@@ -77,8 +89,21 @@ class AuthPostController(call: ApplicationCall): AbstractController(call) {
     suspend fun getUserFeed() {
         runBlocking {
             val target_login = call.parameters["login"]!!
-            val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: 5
-            val offset = call.request.queryParameters["offset"]?.toIntOrNull() ?: 0
+
+            var limit = call.request.queryParameters["limit"]?.toIntOrNull()
+            var offset = call.request.queryParameters["offset"]?.toIntOrNull()
+
+            if ((limit == null && call.request.queryParameters["limit"] != null) || (offset == null && call.request.queryParameters["offset"] != null)) {
+                call.respond(HttpStatusCode.BadRequest, "Лимит и офсет должны быть Int")
+                return@runBlocking
+            }
+
+            if (limit == null) {
+                limit = 5
+            }
+            if (offset == null) {
+                offset = 0
+            }
 
             var accept = false
 
