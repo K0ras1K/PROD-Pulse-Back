@@ -24,6 +24,20 @@ class AuthPostController(call: ApplicationCall): AbstractController(call) {
         runBlocking {
             val receive = call.receive<CreatePostInputModel>()
 
+            for (tag in receive.tags) {
+                if (tag.length >= 20) {
+                    call.respond(HttpStatusCode.BadRequest, ErrorResponse(
+                        "Какой-то из тэгов превышает максимальную длину."
+                    ))
+                    return@runBlocking
+                }
+            }
+
+            if (receive.content.length >= 1000) {
+                call.respond(HttpStatusCode.BadRequest, ErrorResponse("Контент превышает максимальную длину"))
+                return@runBlocking
+            }
+
             val post_data = PostData(
                 id = UUID.randomUUID(),
                 content = receive.content,
