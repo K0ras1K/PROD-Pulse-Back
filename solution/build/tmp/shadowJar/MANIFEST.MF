@@ -1,3 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: online.k0ras1k.pulse.ApplicationKt
 
