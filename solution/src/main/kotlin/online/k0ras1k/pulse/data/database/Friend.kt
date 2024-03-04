@@ -59,6 +59,7 @@ object Friend: Table("friend") {
     fun getFriends(userLogin: String, limit: Int, offset: Int): List<FriendOutputModel> {
         return transaction {
             Friend.select { Friend._login eq userLogin }
+                .orderBy(Friend._added_ad to SortOrder.DESC)
                 .limit(limit, offset.toLong())
                 .map {
                     FriendOutputModel(
