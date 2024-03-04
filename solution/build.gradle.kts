@@ -83,13 +83,13 @@ dependencies {
 
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
-    testImplementation("io.github.corbym:dokker:0.2.0")
 
     implementation("io.ktor:ktor-client-serialization:$ktor_version")
     implementation("io.ktor:ktor-client-core:$ktor_version") // Основной клиент Ktor
     implementation("io.ktor:ktor-client-cio:$ktor_version") // Engine, можно выбрать другой
     implementation("io.ktor:ktor-client-serialization:$ktor_version") // Для сериализации
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    testImplementation("io.ktor:ktor-server-test-host-jvm:2.1.0")
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {

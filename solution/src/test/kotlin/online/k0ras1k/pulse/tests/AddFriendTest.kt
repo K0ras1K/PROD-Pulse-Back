@@ -73,7 +73,7 @@ class AddFriendTest {
 
             setBody(
                 FriendInputModel(
-                    login = "neferpito"
+                    login = "me"
                 )
             )
         }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-233.14475.28">
+    <data-source name="Pulse DB" uuid="9a29bb6f-0691-4e29-8010-81beea549f6c">
+      <database-info product="PostgreSQL" version="13.3 (Debian 13.3-1.pgdg100+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="13.3" exact-driver-version="42.6">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>K0ras1K</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="pulse">
+            <node kind="schema" qname="public" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+  </component>
+</project>
