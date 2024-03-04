@@ -92,6 +92,12 @@ class AuthPostController(call: ApplicationCall): AbstractController(call) {
             if (limit == null) {
                 limit = 5
             }
+            else {
+                if (0 >= limit || 50 < limit) {
+                    call.respond(HttpStatusCode.BadRequest, "Недопустимое значение лимита")
+                    return@runBlocking
+                }
+            }
             if (offset == null) {
                 offset = 0
             }
@@ -114,6 +120,12 @@ class AuthPostController(call: ApplicationCall): AbstractController(call) {
 
             if (limit == null) {
                 limit = 5
+            }
+            else {
+                if (0 >= limit || 50 < limit) {
+                    call.respond(HttpStatusCode.BadRequest, "Недопустимое значение лимита")
+                    return@runBlocking
+                }
             }
             if (offset == null) {
                 offset = 0
