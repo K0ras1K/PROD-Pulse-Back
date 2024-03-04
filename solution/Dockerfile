@@ -13,12 +13,14 @@ COPY src src
 # Выполняем сборку проекта, пропускаем тесты
 RUN gradle build -x test --no-daemon
 
+# Удаляем директорию Kotlin Daemon, чтобы избежать ошибок при создании снимка
+RUN rm -rf /root/.gradle /root/.kotlin
+
 # Используем базовый образ с JDK 17 для выполнения
 FROM eclipse-temurin:17-jdk-alpine
 VOLUME /tmp
 
 # Копируем собранный jar файл из предыдущего шага
-#COPY build/libs/Pulse-0.0.1-all.jar app.jar
 COPY --from=build /workspace/app/build/libs/Pulse-0.0.1-all.jar app.jar
 
 ENV SERVER_ADRESS=0.0.0.0:8080 \
